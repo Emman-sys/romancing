@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart of Hearts</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            overflow: hidden;
+        }
+        .heart-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: red;
+            opacity: 0;
+            transform: scale(0.5) translateX(50px);
+            animation: drawHeart 2s forwards, float 2s infinite ease-in-out alternate 2s;
+        }
+        @keyframes drawHeart {
+            from {
+                opacity: 0;
+                transform: scale(0.5) translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateX(0);
+            }
+        }
+        @keyframes float {
+            from {
+                transform: translateX(0) translateY(0);
+            }
+            to {
+                transform: translateX(0) translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container" id="heart-container"></div>
+    <script>
+        function drawHeart() {
+            const container = document.getElementById("heart-container");
+            const heartCount = 200;
+            
+            for (let i = heartCount; i >= 0; i--) { 
+                setTimeout(() => {
+                    let heart = document.createElement("div");
+                    heart.classList.add("heart");
+                    heart.innerHTML = "❤️";
+                    
+                    let angle = Math.PI * (i / heartCount) * 2;
+                    let x = 16 * Math.pow(Math.sin(angle), 3);
+                    let y = -(13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle));
+                    
+                    heart.style.left = `${150 + x * 10}px`;
+                    heart.style.top = `${150 + y * 10}px`;
+                    heart.style.animationDelay = `${(heartCount - i) * 10}ms`; 
+                    container.appendChild(heart);
+                }, (heartCount - i) * 10);
+            }
+        }
+        
+        drawHeart();
+    </script>
+</body>
+</html>
